@@ -1,78 +1,84 @@
-/**
- *  Example app
- **/
 import React from 'react'
-import { render } from 'react-dom'
 import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming'
-import { Grid, Row, Col } from '@zendeskgarden/react-grid'
-import { UnorderedList } from '@zendeskgarden/react-typography'
-import I18n from '../../javascripts/lib/i18n'
-import { resizeContainer, escapeSpecialChars as escape } from '../../javascripts/lib/helpers'
+import OrderDetails from './order'
+import '../../css/app.css'
+import { render } from 'react-dom'
+import { resizeContainer } from '../lib/helpers'
 
 const MAX_HEIGHT = 1000
-const API_ENDPOINTS = {
-  organizations: '/api/v2/organizations.json'
+const EMPORIX_BASE_URL = 'https://api.emporix.io/'
+export const App = async (client, _appData) => {
+  const token = await authenticateOcctoo(client)
+  const response = await getOrdersForCurrentCustomer(client, token)
+  response.sort((a, b) => new Date(b.created) - new Date(a.created))
+
+  const appContainer = document.querySelector('.main')
+
+  render(
+    <ThemeProvider theme={{ ...DEFAULT_THEME }}>
+      <div className='bg'>
+
+        {response && response.length > 0
+          ? (
+            <>
+              <h2 className='header'>Last Orders from <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span></h2>
+              {response.slice(0, 3).map((order) => (
+                <OrderDetails key={order.id} order={order} />
+              ))}
+            </>
+            )
+          : (
+            <p>No orders available for this customer.</p>
+            )}
+      </div>
+    </ThemeProvider>,
+    appContainer
+  )
+  return resizeContainer(client, MAX_HEIGHT)
 }
 
-class App {
-  constructor (client, _appData) {
-    this._client = client
+async function authenticateOcctoo (client) {
+  try {
+    const response = await client.request({
+      url: `${EMPORIX_BASE_URL}oauth/token`,
+      type: 'POST',
+      contentType: 'application/x-www-form-urlencoded',
+      data: 'grant_type=client_credentials&client_id={{setting.clientId}}&client_secret={{setting.clientSecret}}&scope=order.order_read',
+      secure: true
+    })
 
-    // this.initializePromise is only used in testing
-    // indicate app initilization(including all async operations) is complete
-    this.initializePromise = this.init()
-  }
-
-  /**
-   * Initialize module, render main template
-   */
-  async init () {
-    const currentUser = (await this._client.get('currentUser')).currentUser
-
-    I18n.loadTranslations(currentUser.locale)
-
-    const organizationsResponse = await this._client
-      .request(API_ENDPOINTS.organizations)
-      .catch(this._handleError.bind(this))
-
-    const organizations = organizationsResponse ? organizationsResponse.organizations : []
-
-    const appContainer = document.querySelector('.main')
-
-    render(
-      <ThemeProvider theme={{ ...DEFAULT_THEME }}>
-        <Grid>
-          <Row>
-            <Col data-test-id='sample-app-description'>
-              Hi {escape(currentUser.name)}, this is a sample app
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <span>{I18n.t('default.organizations')}:</span>
-              <UnorderedList data-test-id='organizations'>
-                {organizations.map(organization => (
-                  <UnorderedList.Item key={`organization-${organization.id}`} data-test-id={`organization-${organization.id}`}>
-                    {escape(organization.name)}
-                  </UnorderedList.Item>
-                ))}
-              </UnorderedList>
-            </Col>
-          </Row>
-        </Grid>
-      </ThemeProvider>,
-      appContainer
-    )
-    return resizeContainer(this._client, MAX_HEIGHT)
-  }
-
-  /**
-   * Handle error
-   * @param {Object} error error object
-   */
-  _handleError (error) {
-    console.log('An error is handled here: ', error.message)
+    return response.access_token
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 
+async function getOrdersForCurrentCustomer (client, token) {
+  const emailObject = await client.get('ticket.requester.email')
+  const email = emailObject['ticket.requester.email']
+
+  try {
+    const response = await client.request({
+      url: `${EMPORIX_BASE_URL}order-v2/{{setting.tenant}}/salesorders?q=customer.email:${email}`,
+      type: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'X-Version': 'v2'
+      },
+      secure: true
+    })
+
+    if (!response) {
+      return null
+    }
+
+    response.sort((a, b) => new Date(b) - new Date(a))
+
+    return response
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 export default App

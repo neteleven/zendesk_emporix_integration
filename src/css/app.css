@@ -1,0 +1,65 @@
+.bg {
+    background-image: radial-gradient(73% 147%, #EADFDF 59%, #ECE2DF 100%), radial-gradient(91% 146%, rgba(255, 255, 255, 0.50) 47%, rgba(0, 0, 0, 0.50) 100%);
+    background-blend-mode: screen;
+    border: black;
+}
+
+.header {
+    background-color: rgb(186 17 60);
+    color: white;
+    padding: 1rem ;
+}
+
+h2 {
+    margin-top: 1.5rem;
+    text-align: left;
+    width: 100%;
+    color: #1B1B1B;
+    font-weight: 300;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-family: 'Inter var', system-ui, sans-serif;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input {
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.customButton {
+    background-color: #202c44;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #303c54;
+}
+
+.settingsButton {
+    position: absolute;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settingsButton:hover {
+
+    color: #fff;
+    background-color: #007bff;
+}
