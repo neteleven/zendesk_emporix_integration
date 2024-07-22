@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "Emporix Integration für Zendesk",
+    "short_description": "Die Zendesk-App für Emporix integriert Bestellinformationen direkt in die Ticketansicht und bietet Agenten Zugriff auf bestellte Produkte, Liefer- und Bestelladressen sowie Bestellstatus und -datum. Dies verbessert die Effizienz und Genauigkeit des Kundenservice.",
+    "long_description": "Die Zendesk-App für Emporix ermöglicht es Kundenservice-Agenten, Bestellinformationen direkt in der Ticketansicht einzusehen. Mit dieser Integration haben Agenten sofortigen Zugriff auf wesentliche Bestelldetails wie bestellte Produkte, Liefer- und Bestelladressen sowie Bestellstatus und -datum. Diese nahtlose Verbindung zwischen Zendesk und der Emporix E-Commerce-Plattform eliminiert das mühsame Wechseln zwischen verschiedenen Systemen und bietet eine umfassende Sicht auf die Kundenbestellungen. Agenten können effizienter arbeiten, da sie alle relevanten Informationen auf einen Blick haben, was zu schnelleren und präziseren Antworten führt. Diese App verbessert nicht nur die Effizienz und Genauigkeit des Kundenservices, sondern erhöht auch die Kundenzufriedenheit durch eine konsistentere und informierte Betreuung.",
+    "installation_instructions": "Geben sie die Authentifizierungsdaten für Emporix ein, dann klicken sie installieren:...",
+    "title": "Emporix Integration für Zendesk"
+  },
+  "default": {
+    "organizations": "organizations"
+  }
+}

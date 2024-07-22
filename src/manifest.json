@@ -1,5 +1,5 @@
 {
-  "name": "React_APP",
+  "name": "Emporix Integration for Zendesk",
   "author": {
     "name": "neteleven",
     "email": "zendesk@neteleven.de"
@@ -14,6 +14,26 @@
       }
     }
   },
+  "domainWhitelist": [
+    "api.emporix.io"
+  ],
+  "parameters": [
+    {
+      "name": "clientId",
+      "type": "text",
+      "secure": true
+    },
+    {
+      "name": "clientSecret",
+      "type": "text",
+      "secure": true
+    },
+    {
+      "name": "tenant",
+      "type": "text",
+      "secure": false
+    }
+  ],
   "version": "1.0",
   "frameworkVersion": "2.0"
 }
