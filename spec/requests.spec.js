@@ -31,7 +31,6 @@ describe('authenticateEmporix', () => {
   })
 })
 
-// getOrdersForCurrentCustomer.test.js
 describe('getOrdersForCurrentCustomer', () => {
   beforeAll(() => {
     CLIENT.get = jest.fn()
