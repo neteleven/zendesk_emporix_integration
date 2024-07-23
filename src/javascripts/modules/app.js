@@ -8,7 +8,7 @@ import { resizeContainer } from '../lib/helpers'
 const MAX_HEIGHT = 1000
 const EMPORIX_BASE_URL = 'https://api.emporix.io/'
 export const App = async (client, _appData) => {
-  const token = await authenticateOcctoo(client)
+  const token = await authenticateEmporix(client)
   const response = await getOrdersForCurrentCustomer(client, token)
   response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
@@ -39,7 +39,7 @@ export const App = async (client, _appData) => {
   return resizeContainer(client, MAX_HEIGHT)
 }
 
-async function authenticateOcctoo (client) {
+async function authenticateEmporix (client) {
   try {
     const response = await client.request({
       url: `${EMPORIX_BASE_URL}oauth/token`,

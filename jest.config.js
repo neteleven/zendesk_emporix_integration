@@ -13,5 +13,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/spec'
   ],
-  roots: ['./spec']
+  roots: ['./spec'],
+  moduleNameMapper: {
+    '\\.(css|scss)$': '<rootDir>/spec/mocks/cssMock.js'
+  }
 }

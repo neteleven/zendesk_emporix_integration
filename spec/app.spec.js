@@ -1,17 +1,66 @@
 /* eslint-env jest, browser */
+import React from 'react'
+import { render, unmountComponentAtNode } from 'react-dom'
+import { act } from 'react-dom/test-utils'
+import { screen, configure } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import App from '../src/javascripts/modules/app'
 import i18n from '../src/javascripts/lib/i18n'
-import { CLIENT, ORGANIZATIONS } from './mocks/mock'
-import { unmountComponentAtNode } from 'react-dom'
-import { act } from 'react-dom/test-utils'
-import { configure } from '@testing-library/react'
-import { screen } from '@testing-library/dom'
+import { CLIENT } from './mocks/mock'
+import OrderDetails from '../src/javascripts/modules/order'
+import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming'
 
 const mockEN = {
   'app.name': 'Example App',
   'app.title': 'Example App',
   'default.organizations': 'organizations'
 }
+const mockOrder = [
+  {
+    id: '123456789',
+    status: 'Delivered',
+    entries: [
+      {
+        id: 'entry1',
+        product: {
+          name: 'Product 1',
+          images: [{ url: 'https://via.placeholder.com/150' }]
+        },
+        amount: 2,
+        totalPrice: 50,
+        price: { currency: 'USD' }
+      },
+      {
+        id: 'entry2',
+        product: {
+          name: 'Product 2',
+          images: [{ url: 'https://via.placeholder.com/150' }]
+        },
+        amount: 1,
+        totalPrice: 30,
+        price: { currency: 'USD' }
+      }
+    ],
+    billingAddress: {
+      street: '123 Billing St',
+      streetNumber: 'Apt 101',
+      zipCode: '12345',
+      city: 'Billing City',
+      country: 'Billing Country'
+    },
+    shippingAddress: {
+      street: '456 Shipping St',
+      streetNumber: 'Suite 202',
+      zipCode: '54321',
+      city: 'Shipping City',
+      country: 'Shipping Country'
+    },
+    customer: {
+      title: 'Mr.',
+      name: 'John Doe'
+    }
+  }
+]
 
 describe('Example App', () => {
   beforeAll(() => {
@@ -24,7 +73,7 @@ describe('Example App', () => {
     })
   })
 
-  describe('Rendering', () => {
+  describe('render tests', () => {
     let appContainer = null
 
     beforeEach(() => {
@@ -39,46 +88,37 @@ describe('Example App', () => {
       appContainer = null
     })
 
-    it('render with current username and organizations successfully', (done) => {
-      act(() => {
-        CLIENT.request = jest.fn().mockReturnValueOnce(Promise.resolve(ORGANIZATIONS))
-        CLIENT.invoke = jest.fn().mockReturnValue(Promise.resolve({}))
+    const expectedTexts = [
+      `ID: ${mockOrder[0].id}`,
+      `Status: ${mockOrder[0].status}`,
+      `${mockOrder[0].entries[0].product.name}`,
+      `Quantity: ${mockOrder[0].entries[0].amount}`,
+      `Price: € ${mockOrder[0].entries[0].totalPrice}`,
+      'Billing Address',
+      '123 Billing St Apt 101',
+      '12345 Billing City',
+      'Billing Country',
+      'Shipping Address',
+      '456 Shipping St Suite 202',
+      '54321 Shipping City',
+      'Shipping Country'
+    ]
 
-        const app = new App(CLIENT, {})
-        app.initializePromise.then(() => {
-          const descriptionElement = screen.getByTestId('sample-app-description')
-          expect(descriptionElement.textContent).toBe('Hi Sample User, this is a sample app')
+    it.each(expectedTexts)('renders OrderDetails component with expected text: %s', async (text) => {
+      await act(async () => {
+        await App(CLIENT, {})
 
-          const organizations = screen.getByTestId('organizations')
-          expect(organizations.childElementCount).toBe(2)
-
-          const organizationA = screen.getByTestId('organization-1')
-          expect(organizationA.textContent).toBe('Organization A')
-          const organizationB = screen.getByTestId('organization-2')
-          expect(organizationB.textContent).toBe('Organization B')
-          done()
-        })
+        render(
+          <ThemeProvider theme={{ ...DEFAULT_THEME }}>
+            <OrderDetails order={mockOrder[0]} />
+          </ThemeProvider>,
+          appContainer
+        )
       })
-    })
 
-    it('render with current username but no organizations since api errors', (done) => {
-      act(() => {
-        CLIENT.request = jest.fn().mockReturnValueOnce(Promise.reject(new Error('a fake error')))
-        const app = new App(CLIENT, {})
-        const errorSpy = jest.spyOn(app, '_handleError')
-
-        app.initializePromise.then(() => {
-          const descriptionElement = screen.getByTestId('sample-app-description')
-          expect(descriptionElement.textContent).toBe('Hi Sample User, this is a sample app')
-
-          const organizations = screen.getByTestId('organizations')
-          expect(organizations.childElementCount).toBe(0)
-
-          expect(errorSpy).toBeCalled()
-
-          done()
-        })
-      })
+      const element = screen.getByText(text)
+      expect(element).toBeInTheDocument()
+      expect(element).toHaveTextContent(text)
     })
   })
 })
