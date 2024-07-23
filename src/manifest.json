@@ -21,16 +21,25 @@
     {
       "name": "clientId",
       "type": "text",
+      "required": true,
       "secure": true
     },
     {
       "name": "clientSecret",
       "type": "text",
+      "required": true,
       "secure": true
     },
     {
       "name": "tenant",
       "type": "text",
+      "required": true,
+      "secure": false
+    },
+    {
+      "name": "orderDisplayLimit",
+      "type": "number",
+      "default": 3,
       "secure": false
     }
   ],

@@ -13,7 +13,9 @@ export const App = async (client, _appData) => {
   response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
   const appContainer = document.querySelector('.main')
-
+  const settings = await client.metadata().then(function (metadata) {
+    return metadata.settings
+  })
   render(
     <ThemeProvider theme={{ ...DEFAULT_THEME }}>
       <div className='bg'>
@@ -22,7 +24,7 @@ export const App = async (client, _appData) => {
           ? (
             <>
               <h2 className='header'>Last Orders from <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span></h2>
-              {response.slice(0, 3).map((order) => (
+              {response.slice(0, settings.orderDisplayLimit).map((order) => (
                 <OrderDetails key={order.id} order={order} />
               ))}
             </>
