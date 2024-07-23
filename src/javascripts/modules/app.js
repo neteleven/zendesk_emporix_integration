@@ -39,7 +39,7 @@ export const App = async (client, _appData) => {
   return resizeContainer(client, MAX_HEIGHT)
 }
 
-async function authenticateEmporix (client) {
+export async function authenticateEmporix (client) {
   try {
     const response = await client.request({
       url: `${EMPORIX_BASE_URL}oauth/token`,
@@ -56,7 +56,7 @@ async function authenticateEmporix (client) {
   }
 }
 
-async function getOrdersForCurrentCustomer (client, token) {
+export async function getOrdersForCurrentCustomer (client, token) {
   const emailObject = await client.get('ticket.requester.email')
   const email = emailObject['ticket.requester.email']
 

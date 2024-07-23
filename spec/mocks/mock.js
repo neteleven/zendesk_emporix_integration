@@ -47,12 +47,6 @@ const mockOrder = [
   {
     id: '123456789',
     status: 'Delivered',
-    payments: [
-      {
-        status: 'Paid',
-        method: 'Credit Card'
-      }
-    ],
     entries: [
       {
         id: 'entry1',
