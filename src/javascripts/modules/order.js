@@ -40,9 +40,8 @@ const Entries = ({ order }) => {
                 </div>
               )}
               <div className='product-details'>
-                <p className='product'>{entry.productName}</p>
-                <p className='product'>ID: {entry.id}</p>
-                <p className='productsku'>Sku: {entry.sku}</p>
+                <p className='product'>{entry.product.name}</p>
+                <p className='id'>ID: {entry.id}</p>
                 <p className='amount'>Quantity: {entry.amount}</p>
                 <p className='unitprice'>Unitprice: € {entry.unitPrice}</p>
                 <p className='price'>Price: € {entry.totalPrice}</p>
