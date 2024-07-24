@@ -2,7 +2,8 @@
   "name": "Emporix Integration for Zendesk",
   "author": {
     "name": "neteleven",
-    "email": "zendesk@neteleven.de"
+    "email": "zendesk@neteleven.de",
+    "url": "https://www.neteleven.de/"
   },
   "defaultLocale": "en",
   "private": true,
