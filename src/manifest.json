@@ -6,7 +6,7 @@
     "url": "https://www.neteleven.de/"
   },
   "defaultLocale": "en",
-  "private": true,
+  "private": false,
   "location": {
     "support": {
       "ticket_sidebar": {
