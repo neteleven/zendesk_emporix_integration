@@ -7,6 +7,20 @@
     "title": "Emporix Integration for Zendesk"
   },
   "default": {
-    "organizations": "organizations"
+    "organizations": "organizations",
+    "latest_orders": "Latest orders from",
+    "order_info": "Order Information",
+    "order_id": "Order Number",
+    "order_date": "Order Date",
+    "order_status": "Order Status",
+    "total_price": "Total Price",
+    "billing_address": "Billing Address",
+    "shipping_address": "Shipping Address",
+    "product_id": "Product ID",
+    "product_quantity": "Quantity",
+    "product_unit_price": "Unit Price",
+    "product_total_price": "Total Price",
+    "no_orders_available": "There are no orders available for this customer.",
+    "no_order_data": "No order data available."
   }
 }

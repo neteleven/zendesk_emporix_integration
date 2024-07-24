@@ -1,24 +1,46 @@
-import React from 'react'
 import '../../css/order.css'
+import i18n from '../lib/i18n'
+import React, { useEffect, useState } from 'react'
 
-const OrderDetails = ({ order }) => {
+const currencySymbols = {
+  EUR: '€',
+  GBP: '£',
+  USD: '$',
+  CAD: 'C$',
+  AUD: 'A$'
+}
+const OrderDetails = ({ client, order }) => {
+  const [date, setDate] = useState(null)
+  useEffect(() => {
+    client.get('currentUser.locale').then((data) => {
+      const locale = data['currentUser.locale']
+      try {
+        const formattedDate = new Date(order.created).toLocaleDateString(locale)
+        setDate(formattedDate)
+      } catch (error) {
+        console.error('error while converting order date to user locale', error)
+      }
+      i18n.loadTranslations(locale)
+    })
+  }, [])
   if (!order) {
-    return <div>No order data available</div>
+    return <div>{i18n.t('default.no_order_data')}</div>
   }
-  const date = new Date(order.created).toLocaleDateString('de-DE')
   return (
     <div className='order-details-container'>
-      <p className='title'>Order Info</p>
+      <p className='title'>{i18n.t('default.order_info')}</p>
       <div className='order-info'>
-        <p>ID: {order.id}</p>
-        <p>Date: {date}</p>
-        <p>Status: {order.status}</p>
-        <p>Total Price: € {order.totalPrice}</p>
+        <p>{i18n.t('default.order_id')}: {order.id}</p>
+        {date && (
+          <p>{i18n.t('default.order_date')}: {date}</p>
+        )}
+        <p>{i18n.t('default.order_status')}: {order.status}</p>
+        <p>{i18n.t('default.total_price')}: {order.totalPrice} {getCurrencySymbol(order.payments[0].currency)}</p>
       </div>
       <hr className='separator' />
       <div className='address-container'>
-        <Address title='Billing Address' address={order.billingAddress} />
-        <Address title='Shipping Address' address={order.shippingAddress} />
+        <Address title={i18n.t('default.billing_address')} address={order.billingAddress} />
+        <Address title={i18n.t('default.shipping_address')} address={order.shippingAddress} />
       </div>
 
       <Entries order={order} />
@@ -41,10 +63,10 @@ const Entries = ({ order }) => {
               )}
               <div className='product-details'>
                 <p className='product'>{entry.product.name}</p>
-                <p className='id'>ID: {entry.id}</p>
-                <p className='amount'>Quantity: {entry.amount}</p>
-                <p className='unitprice'>Unitprice: € {entry.unitPrice}</p>
-                <p className='price'>Price: € {entry.totalPrice}</p>
+                <p className='id'>{i18n.t('default.product_id')}: {entry.id}</p>
+                <p className='amount'>{i18n.t('default.product_quantity')}: {entry.amount}</p>
+                <p className='unitprice'>{i18n.t('default.product_unit_price')}: {entry.unitPrice} {getCurrencySymbol(order.payments[0].currency)}</p>
+                <p className='price'>{i18n.t('default.product_total_price')}: {entry.totalPrice} {getCurrencySymbol(order.payments[0].currency)}</p>
               </div>
             </li>
           ))}
@@ -64,5 +86,7 @@ const Address = ({ title, address }) => {
     </div>
   )
 }
-
+function getCurrencySymbol (code) {
+  return currencySymbols[code] || code
+}
 export default OrderDetails

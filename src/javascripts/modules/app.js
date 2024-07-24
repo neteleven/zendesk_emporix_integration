@@ -4,39 +4,50 @@ import OrderDetails from './order'
 import '../../css/app.css'
 import { render } from 'react-dom'
 import { resizeContainer } from '../lib/helpers'
+import i18n from '../lib/i18n'
 
 const MAX_HEIGHT = 1000
 const EMPORIX_BASE_URL = 'https://api.emporix.io/'
+
 export const App = async (client, _appData) => {
-  const token = await authenticateEmporix(client)
-  const response = await getOrdersForCurrentCustomer(client, token)
-  response.sort((a, b) => new Date(b.created) - new Date(a.created))
+  try {
+    const localeData = await client.get('currentUser.locale')
+    const locale = localeData?.['currentUser.locale']
+    i18n.loadTranslations(locale || 'en-US')
 
-  const appContainer = document.querySelector('.main')
-  const settings = await client.metadata().then(function (metadata) {
-    return metadata.settings
-  })
-  render(
-    <ThemeProvider theme={{ ...DEFAULT_THEME }}>
-      <div className='bg'>
+    const token = await authenticateEmporix(client)
+    const response = await getOrdersForCurrentCustomer(client, token)
+    response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
-        {response && response.length > 0
-          ? (
-            <>
-              <h2 className='header'>Last Orders from <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span></h2>
-              {response.slice(0, settings.orderDisplayLimit).map((order) => (
-                <OrderDetails key={order.id} order={order} />
-              ))}
-            </>
-            )
-          : (
-            <p>No orders available for this customer.</p>
-            )}
-      </div>
-    </ThemeProvider>,
-    appContainer
-  )
-  return resizeContainer(client, MAX_HEIGHT)
+    const appContainer = document.querySelector('.main')
+    const settings = await client.metadata().then(metadata => metadata.settings)
+
+    render(
+      <ThemeProvider theme={{ ...DEFAULT_THEME }}>
+        <div className='bg'>
+          {response && response.length > 0
+            ? (
+              <>
+                <h2 className='header'>
+                  {i18n.t('default.latest_orders')} <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span>
+                </h2>
+                {response.slice(0, settings.orderDisplayLimit).map(order => (
+                  <OrderDetails client={client} key={order.id} order={order} />
+                ))}
+              </>
+              )
+            : (
+              <p>{i18n.t('default.no_orders_available')}</p>
+              )}
+        </div>
+      </ThemeProvider>,
+      appContainer
+    )
+
+    return resizeContainer(client, MAX_HEIGHT)
+  } catch (error) {
+    console.error('Error in App component:', error)
+  }
 }
 
 export async function authenticateEmporix (client) {
@@ -48,19 +59,18 @@ export async function authenticateEmporix (client) {
       data: 'grant_type=client_credentials&client_id={{setting.clientId}}&client_secret={{setting.clientSecret}}&scope=order.order_read',
       secure: true
     })
-
     return response.access_token
   } catch (error) {
-    console.log(error)
+    console.error('Error authenticating Emporix:', error)
     throw error
   }
 }
 
 export async function getOrdersForCurrentCustomer (client, token) {
-  const emailObject = await client.get('ticket.requester.email')
-  const email = emailObject['ticket.requester.email']
-
   try {
+    const emailObject = await client.get('ticket.requester.email')
+    const email = emailObject['ticket.requester.email']
+
     const response = await client.request({
       url: `${EMPORIX_BASE_URL}order-v2/{{setting.tenant}}/salesorders?q=customer.email:${email}`,
       type: 'GET',
@@ -72,14 +82,14 @@ export async function getOrdersForCurrentCustomer (client, token) {
     })
 
     if (!response) {
-      return null
+      return []
     }
 
     response.sort((a, b) => new Date(b) - new Date(a))
 
     return response
   } catch (error) {
-    console.log(error)
+    console.error('Error getting orders:', error)
     throw error
   }
 }
