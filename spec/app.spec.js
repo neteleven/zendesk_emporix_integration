@@ -2,19 +2,12 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
-import { screen, configure } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import App from '../src/javascripts/modules/app'
-import i18n from '../src/javascripts/lib/i18n'
 import { CLIENT } from './mocks/mock'
 import OrderDetails from '../src/javascripts/modules/order'
 import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming'
 
-const mockEN = {
-  'app.name': 'Example App',
-  'app.title': 'Example App',
-  'default.organizations': 'organizations'
-}
 const mockOrder = [
   {
     id: '123456789',
@@ -58,21 +51,37 @@ const mockOrder = [
     customer: {
       title: 'Mr.',
       name: 'John Doe'
-    }
+    },
+    payments: [
+      {
+        status: 'PENDING',
+        method: 'cash-on-delivery',
+        paidAmount: 0,
+        currency: 'EUR'
+      }
+    ]
   }
 ]
-
+jest.mock('../src/translations/en', () => ({
+  'app.name': 'Example App',
+  'app.title': 'Example App',
+  'default.organizations': 'organizations',
+  'default.latest_orders': 'Latest orders from',
+  'default.order_info': 'Order Information',
+  'default.order_id': 'Order Number',
+  'default.order_date': 'Order Date',
+  'default.order_status': 'Order Status',
+  'default.total_price': 'Total Price',
+  'default.billing_address': 'Billing Address',
+  'default.shipping_address': 'Shipping Address',
+  'default.product_id': 'Product ID',
+  'default.product_quantity': 'Quantity',
+  'default.product_unit_price': 'Unit Price',
+  'default.product_total_price': 'Total Price',
+  'default.no_orders_available': 'There are no orders available for this customer.',
+  'default.no_order_data': 'No order data available.'
+}))
 describe('Example App', () => {
-  beforeAll(() => {
-    configure({ testIdAttribute: 'data-test-id' })
-
-    i18n.loadTranslations('en')
-
-    jest.mock('../src/translations/en', () => {
-      return mockEN
-    })
-  })
-
   describe('render tests', () => {
     let appContainer = null
 
@@ -89,11 +98,11 @@ describe('Example App', () => {
     })
 
     const expectedTexts = [
-      `ID: ${mockOrder[0].id}`,
-      `Status: ${mockOrder[0].status}`,
+      `Order Number: ${mockOrder[0].id}`,
+      `Order Status: ${mockOrder[0].status}`,
       `${mockOrder[0].entries[0].product.name}`,
       `Quantity: ${mockOrder[0].entries[0].amount}`,
-      `Price: € ${mockOrder[0].entries[0].totalPrice}`,
+      `Total Price: ${mockOrder[0].entries[0].totalPrice} €`,
       'Billing Address',
       '123 Billing St Apt 101',
       '12345 Billing City',
@@ -106,11 +115,9 @@ describe('Example App', () => {
 
     it.each(expectedTexts)('renders OrderDetails component with expected text: %s', async (text) => {
       await act(async () => {
-        await App(CLIENT, {})
-
         render(
           <ThemeProvider theme={{ ...DEFAULT_THEME }}>
-            <OrderDetails order={mockOrder[0]} />
+            <OrderDetails client={CLIENT} order={mockOrder[0]} />
           </ThemeProvider>,
           appContainer
         )

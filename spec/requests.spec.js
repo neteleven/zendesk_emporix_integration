@@ -62,17 +62,16 @@ describe('getOrdersForCurrentCustomer', () => {
       { date: '2023-07-02' },
       { date: '2023-07-01' },
       { date: '2023-06-30' }
-    ]);
-  });
+    ])
+  })
 
-  it('should return null if no orders are found', async () => {
+  it('should return empty array if no orders are found', async () => {
     const email = 'customer@example.com'
     CLIENT.get.mockResolvedValue({ 'ticket.requester.email': email })
     CLIENT.request.mockResolvedValue(null)
     const result = await getOrdersForCurrentCustomer(CLIENT, token)
 
-
-    expect(result).toBeNull()
+    expect(result).toEqual([])
   })
 
   it('should throw an error on failure', async () => {
