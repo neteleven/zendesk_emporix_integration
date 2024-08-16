@@ -17,9 +17,11 @@ export const App = async (client, _appData) => {
 
     const token = await authenticateEmporix(client)
     const response = await getOrdersForCurrentCustomer(client, token)
+    // 2 sorting functions in line 21 and 90. I think, one can be removed.
     response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
     const appContainer = document.querySelector('.main')
+    // Not sure, if it is best to combine `await` with `then()`? I think `await` is not necessary when using `then()`.
     const settings = await client.metadata().then(metadata => metadata.settings)
 
     render(
