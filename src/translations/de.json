@@ -7,7 +7,7 @@
     "title": "Emporix Integration für Zendesk"
   },
   "default": {
-    "organizations": "organizations",
+    "organizations": "Organisationen",
     "latest_orders": "Neueste Bestellungen von",
     "order_info": "Bestellinformationen",
     "order_id": "Bestellnummer",

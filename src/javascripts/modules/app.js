@@ -17,10 +17,9 @@ export const App = async (client, _appData) => {
 
     const token = await authenticateEmporix(client)
     const response = await getOrdersForCurrentCustomer(client, token)
-    response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
     const appContainer = document.querySelector('.main')
-    const settings = await client.metadata().then(metadata => metadata.settings)
+    const settings = client.metadata().then(metadata => metadata.settings)
 
     render(
       <ThemeProvider theme={{ ...DEFAULT_THEME }}>
@@ -85,7 +84,7 @@ export async function getOrdersForCurrentCustomer (client, token) {
       return []
     }
 
-    response.sort((a, b) => new Date(b) - new Date(a))
+    response.sort((a, b) => new Date(b.created) - new Date(a.created))
 
     return response
   } catch (error) {

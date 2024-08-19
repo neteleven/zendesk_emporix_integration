@@ -89,4 +89,5 @@ const Address = ({ title, address }) => {
 function getCurrencySymbol (code) {
   return currencySymbols[code] || code
 }
+
 export default OrderDetails
