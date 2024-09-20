@@ -21,6 +21,7 @@
     "product_unit_price": "Unit Price",
     "product_total_price": "Total Price",
     "no_orders_available": "There are no orders available for this customer.",
-    "no_order_data": "No order data available."
+    "no_order_data": "No order data available.",
+    "auth_error": "The clientId, clientSecret, or tenant you provided is incorrect. Please check your credentials and try again."
   }
 }

@@ -21,6 +21,7 @@
     "product_unit_price": "Einzelpreis",
     "product_total_price": "Gesamtpreis",
     "no_orders_available": "Für diesen Kunden konnten keine Bestellungen gefunden werden.",
-    "no_order_data": "Keine Bestelldaten vorhanden."
+    "no_order_data": "Keine Bestelldaten vorhanden.",
+    "auth_error": "Die eingegebene clientId, das clientSecret oder der Tenant ist falsch. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut."
   }
 }

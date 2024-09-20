@@ -47,6 +47,20 @@
     margin-top: 10px;
 }
 
+.error-card {
+    padding: 2rem;
+    background-color: #ffe5e5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 1.5rem;
+    border: 2px solid #ff4d4d;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 15px;
+    color: #b30000;
+}
+
 @media(min-width:576px) {
    .product-card {
        flex-direction: row;

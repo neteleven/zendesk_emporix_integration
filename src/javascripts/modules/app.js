@@ -14,9 +14,15 @@ export const App = async (client, _appData) => {
     const localeData = await client.get('currentUser.locale')
     const locale = localeData?.['currentUser.locale']
     i18n.loadTranslations(locale || 'en-US')
-
-    const token = await authenticateEmporix(client)
-    const response = await getOrdersForCurrentCustomer(client, token)
+    let authError = false
+    let token
+    let response
+    try {
+      token = await authenticateEmporix(client)
+      response = await getOrdersForCurrentCustomer(client, token)
+    } catch (error) {
+      authError = true
+    }
 
     const appContainer = document.querySelector('.main')
     const settings = client.metadata().then(metadata => metadata.settings)
@@ -24,19 +30,27 @@ export const App = async (client, _appData) => {
     render(
       <ThemeProvider theme={{ ...DEFAULT_THEME }}>
         <div className='bg'>
-          {response && response.length > 0
+          {authError
             ? (
               <>
-                <h2 className='header'>
-                  {i18n.t('default.latest_orders')} <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span>
-                </h2>
-                {response.slice(0, settings.orderDisplayLimit).map(order => (
-                  <OrderDetails client={client} key={order.id} order={order} />
-                ))}
+                <div className='error-card'>{i18n.t('default.auth_error')}</div>
               </>
               )
             : (
-              <p>{i18n.t('default.no_orders_available')}</p>
+                response && response.length > 0
+                  ? (
+                    <>
+                      <h2 className='header'>
+                        {i18n.t('default.latest_orders')} <span style={{ textDecoration: 'underline' }}>{response[0].customer.firstName} {response[0].customer.lastName}</span>
+                      </h2>
+                      {response.slice(0, settings.orderDisplayLimit).map(order => (
+                        <OrderDetails client={client} key={order.id} order={order} />
+                      ))}
+                    </>
+                    )
+                  : (
+                    <div className='error-card'>{i18n.t('default.no_orders_available')}</div>
+                    )
               )}
         </div>
       </ThemeProvider>,
@@ -45,7 +59,7 @@ export const App = async (client, _appData) => {
 
     return resizeContainer(client, MAX_HEIGHT)
   } catch (error) {
-    console.error('Error in App component:', error)
+    console.error('Emporix for Zendesk > Error in App component:', error)
   }
 }
 
@@ -60,7 +74,7 @@ export async function authenticateEmporix (client) {
     })
     return response.access_token
   } catch (error) {
-    console.error('Error authenticating Emporix:', error)
+    console.error('Emporix for Zendesk > Error authenticating Emporix:', error)
     throw error
   }
 }
@@ -88,7 +102,7 @@ export async function getOrdersForCurrentCustomer (client, token) {
 
     return response
   } catch (error) {
-    console.error('Error getting orders:', error)
+    console.error('Emporix for Zendesk > Error getting orders:', error)
     throw error
   }
 }
