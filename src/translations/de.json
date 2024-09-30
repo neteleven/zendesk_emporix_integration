@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Emporix Integration für Zendesk",
-    "short_description": "Die **Emporix Integration für Zendesk** integriert Bestellinformationen direkt in die Ticketansicht und bietet Agenten Zugriff auf:  \n\n* Bestellte Produkte  \n* Liefer- und Bestelladressen  \n* Bestellstatus und -datum  \n\nDies verbessert die Effizienz und Genauigkeit des Kundenservice.",
-    "long_description": "### Emporix Integration für Zendesk  \n\nDie Emporix Integration für Zendesk ermöglicht es Kundenservice-Agenten, Bestellinformationen direkt in der Ticketansicht einzusehen. Mit dieser Integration haben Agenten sofortigen Zugriff auf wesentliche Bestelldetails wie:  \n\n* Bestellte Produkte  \n* Liefer- und Bestelladressen  \n* Bestellstatus und -datum  \n\nDiese nahtlose Verbindung zwischen **Zendesk** und der **Emporix E-Commerce-Plattform** eliminiert das mühsame Wechseln zwischen verschiedenen Systemen und bietet eine umfassende Sicht auf die Kundenbestellungen.  \n\nAgenten können effizienter arbeiten, da sie alle relevanten Informationen auf einen Blick haben, was zu schnelleren und präziseren Antworten führt. Diese App verbessert nicht nur die Effizienz und Genauigkeit des Kundenservices, sondern erhöht auch die **Kundenzufriedenheit** durch eine konsistentere und informierte Betreuung.",
-    "installation_instructions": "Geben sie die Authentifizierungsdaten für Emporix ein, dann klicken sie installieren:...",
-    "title": "Emporix Integration für Zendesk"
+    "name": "Emporix Connect für Support",
+    "short_description": "eCommerce-Support für Zendesk",
+    "long_description": "### Emporix Connect für Support  \n\nEmporix Connect für Zendesk Support integriert Bestellinformationen direkt in der Ticketansicht. Support-Mitarbeiter haben sofortigen Zugriff auf wichtige Details wie:  \n\n* Bestellte Produkte  \n* Liefer- und Rechnungsadressen  \n* Bestellstatus und -datum  \n\nDiese nahtlose Integration zwischen **Zendesk** und der **Emporix eCommerce-Plattform** erspart das Wechseln zwischen Systemen und bietet einen umfassenden Überblick über Bestellungen. Das Ergebnis: schnellere, genauere Antworten und eine gesteigerte Kundenzufriedenheit.",
+    "installation_instructions": "### Schritt-für-Schritt-Anleitung zur Installation von Emporix Connect für Support  \n\n---\n\n### Schritt 1: Emporix API-Zugangsdaten abrufen  \n\n**Gehen Sie zur Seite Emporix API-Schlüssel:**  \n- Öffnen Sie [Emporix API-Schlüssel](https://app.emporix.io/api-keys) und melden Sie sich an, falls erforderlich.  \n\n**Finden Sie Ihre Zugangsdaten:**  \n- Suchen Sie nach Ihrem `clientId`, `clientSecret` und `tenant` im API-Schlüssel-Bereich.  \n\n**Kopieren Sie die Zugangsdaten:**  \n- Kopieren Sie `clientId`, `clientSecret` und `tenant` für später.\n\n---\n\n### Schritt 2: Emporix Connect für Support installieren  \n\n**App installieren:**  \n- Folgen Sie den Anweisungen auf dem Bildschirm.  \n\n**API-Zugangsdaten eingeben:**  \nWenn Sie dazu aufgefordert werden, geben Sie Folgendes ein:  \n\n- **ClientId**: Fügen Sie Ihre `clientId` ein.  \n- **ClientSecret**: Fügen Sie Ihr `clientSecret` ein.  \n- **Tenant**: Fügen Sie den `tenant` ein.  \n- **OrderDisplayLimit**: Geben Sie die Anzahl der Bestellungen ein, die Sie anzeigen möchten. Der Standardwert ist 3.",
+    "title": "Emporix Connect für Support"
   },
   "default": {
     "organizations": "Organisationen",
@@ -20,8 +20,8 @@
     "product_quantity": "Anzahl",
     "product_unit_price": "Einzelpreis",
     "product_total_price": "Gesamtpreis",
-    "no_orders_available": "Für diesen Kunden konnten keine Bestellungen gefunden werden.",
-    "no_order_data": "Keine Bestelldaten vorhanden.",
-    "auth_error": "Die eingegebene clientId, das clientSecret oder der Tenant ist falsch. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut."
+    "no_orders_available": "Für diesen Kunden sind keine Bestellungen verfügbar.",
+    "no_order_data": "Keine Bestelldaten verfügbar.",
+    "auth_error": "Die eingegebenen Zugangsdaten (clientId, clientSecret oder tenant) scheinen nicht korrekt zu sein. Bitte überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
   }
 }

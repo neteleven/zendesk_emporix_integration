@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Emporix Integration for Zendesk",
-    "short_description": "The Emporix Integration for Zendesk integrates order information directly into the ticket view, providing agents with access to ordered products, delivery and billing addresses, and order status and date. This enhances the efficiency and accuracy of customer service.",
-    "long_description": "### Emporix Integration for Zendesk  \n\nThe Emporix Integration for Zendesk allows customer service agents to view order information directly within the ticket view. With this integration, agents have immediate access to essential order details such as:  \n\n* Ordered products  \n* Delivery and billing addresses  \n* Order status and date  \n\nThis seamless connection between **Zendesk** and the **Emporix e-commerce platform** eliminates the need to switch between different systems, offering a comprehensive view of customer orders.  \n\nAgents can work more efficiently as they have all relevant information at a glance, leading to faster and more accurate responses. This app not only improves the efficiency and accuracy of customer service but also **increases customer satisfaction** through consistent and informed support.",
-    "installation_instructions": "Enter Emporix authentification data, then click Install:...",
-    "title": "Emporix Integration for Zendesk"
+    "name": "Emporix Connect for Support",
+    "short_description": "eCommerce support for Zendesk",
+    "long_description": "### Emporix Connect for Support  \n\nEmporix Connect for Zendesk Support integrates order information directly into the ticket view. Support agents can quickly access key order details such as:  \n\n* Ordered products  \n* Shipping and billing addresses  \n* Order status and date  \n\nWith this integration, there’s no need to switch between systems. Agents get everything they need in one place, allowing for faster, more accurate responses that boost customer satisfaction.",
+    "installation_instructions": "### Step-by-Step Guide to Installing Emporix Connect for Support  \n\n---\n\n### Step 1: Get Your Emporix API Credentials  \n\n**Go to the Emporix API Keys page:**  \n- Open [Emporix API Keys](https://app.emporix.io/api-keys) and log in if required.  \n\n**Find your credentials:**  \n- In the API Key section, locate your `clientId`, `clientSecret`, and `tenant`.  \n\n**Copy your credentials:**  \n- Copy the `clientId`, `clientSecret`, and `tenant` for later use.\n\n---\n\n### Step 2: Install Emporix Connect for Support  \n\n**Install the app:**  \n- Follow the instructions displayed on the screen.  \n\n**Enter your API credentials:**  \nWhen prompted, provide the following:  \n\n- **ClientId**: Paste your `clientId`.  \n- **ClientSecret**: Paste your `clientSecret`.  \n- **Tenant**: Paste your `tenant`.  \n- **OrderDisplayLimit**: Set how many orders to display (default is 3).",
+    "title": "Emporix Connect for Support"
   },
   "default": {
     "organizations": "organizations",
@@ -22,6 +22,6 @@
     "product_total_price": "Total Price",
     "no_orders_available": "There are no orders available for this customer.",
     "no_order_data": "No order data available.",
-    "auth_error": "The clientId, clientSecret, or tenant you provided is incorrect. Please check your credentials and try again."
+    "auth_error": "The clientId, clientSecret, or tenant you entered seems incorrect. Please double-check your details and try again."
   }
 }
