@@ -16,10 +16,6 @@ describe('i18n', () => {
     jest.mock('../src/translations/en', () => {
       return mockEN
     })
-
-    jest.mock('../src/translations/fr', () => {
-      throw new Error('no such file')
-    })
   })
 
   describe('#loadTranslations', () => {
